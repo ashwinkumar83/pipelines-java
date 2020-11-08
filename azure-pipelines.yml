@@ -26,6 +26,6 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifacts'
   inputs:
-    PathtoPublish: '$(System.DefaultWorkingDirectory)/target/*.*'
+    PathtoPublish: '$(System.DefaultWorkingDirectory)/target/helloworld.war'
     ArtifactName: 'drop'
     publishLocation: 'Container'
