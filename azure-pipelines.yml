@@ -34,7 +34,7 @@ stages:
       displayName: 'Maven Package'
 
       inputs:
-        mavenPomFile: 'pom.xml'
+        mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
         mavenOptions: '-Xmx3072m'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: '1.8'
@@ -46,6 +46,6 @@ stages:
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifacts'
       inputs:
-        PathtoPublish: '$(System.DefaultWorkingDirectory)/target/*.war'
+        PathtoPublish: '$(System.DefaultWorkingDirectory)/target/*.*'
         ArtifactName: 'drop'
         publishLocation: 'Container'
