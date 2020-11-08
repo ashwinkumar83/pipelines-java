@@ -6,46 +6,26 @@
 trigger:
 - master
 
-variables:
+pool:
+  vmImage: ubuntu-latest
 
-  # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: '3e109182-4f45-43e3-97cd-43811bfba7fd'
-  
-  # Web app name
-  webAppName: 'az400-javawebapp'
+steps:
+- task: Maven@3
+  displayName: 'Maven Package'
 
-  # Environment name
-  environmentName: 'az400-javawebapp'
-  
-  # Agent VM image name
-  vmImageName: 'ubuntu-latest'
+  inputs:
+    mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
+    mavenOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    goals: 'package'  
 
-stages:
-- stage: Build
-  displayName: Build stage
-  jobs:
-  - job: MavenPackageArtifacts
-    displayName: Maven Build Package
-    pool:
-      vmImage: $(vmImageName)
-    
-    steps:
-    - task: Maven@3
-      displayName: 'Maven Package'
-
-      inputs:
-        mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
-        mavenOptions: '-Xmx3072m'
-        javaHomeOption: 'JDKVersion'
-        jdkVersionOption: '1.8'
-        jdkArchitectureOption: 'x64'
-        publishJUnitResults: true
-        testResultsFiles: '**/surefire-reports/TEST-*.xml'
-        goals: 'package'  
-
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish Artifacts'
-      inputs:
-        PathtoPublish: '$(System.DefaultWorkingDirectory)/target/*.*'
-        ArtifactName: 'drop'
-        publishLocation: 'Container'
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifacts'
+  inputs:
+    PathtoPublish: '$(System.DefaultWorkingDirectory)/target/*.*'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
