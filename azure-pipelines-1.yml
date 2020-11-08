@@ -25,6 +25,13 @@ stages:
           publishJUnitResults: true
           testResultsFiles: '**/surefire-reports/TEST-*.xml'
           goals: 'package'
+- stage: publish
+  displayName: Publish stage
+  jobs:
+  - job: publish
+    displayName: Publish Artifacts
+    pool:
+      steps:
       - task: PublishBuildArtifacts@1
         inputs:
           PathtoPublish: '$(Build.ArtifactStagingDirectory)'
