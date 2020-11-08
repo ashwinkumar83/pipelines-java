@@ -43,15 +43,8 @@ stages:
         testResultsFiles: '**/surefire-reports/TEST-*.xml'
         goals: 'package'  
 
-- stage: Publish
-  displayName: Publish stage
-  dependsOn: Build
-  condition: succeeded()
-  jobs:
-  - job: PublishArtifacts
-    displayName: Publish Artifacts
-    steps:
     - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifacts'
       inputs:
         PathtoPublish: '$(System.DefaultWorkingDirectory)/target/*.war'
         ArtifactName: 'drop'
