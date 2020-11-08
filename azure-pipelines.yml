@@ -53,6 +53,6 @@ stages:
     steps:
     - task: PublishBuildArtifacts@1
       inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)/target/*.war'
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/pipelines-java/target/*.war'
         ArtifactName: 'drop'
         publishLocation: 'Container'
