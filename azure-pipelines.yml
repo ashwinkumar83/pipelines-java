@@ -24,8 +24,8 @@ stages:
 - stage: Build
   displayName: Build stage
   jobs:
-  - job: MavenPackageAndPublishArtifacts
-    displayName: Maven Package and Publish Artifacts
+  - job: MavenPackageArtifacts
+    displayName: Maven Build Package
     pool:
       vmImage: $(vmImageName)
     
@@ -48,8 +48,8 @@ stages:
   dependsOn: Build
   condition: succeeded()
   jobs:
-  - job: MavenPackageAndPublishArtifacts
-    displayName: Maven Package and Publish Artifacts
+  - job: PublishArtifacts
+    displayName: Publish Artifacts
     steps:
     - task: PublishBuildArtifacts@1
       inputs:
