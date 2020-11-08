@@ -32,8 +32,16 @@ stages:
     steps:
     - task: Maven@3
       displayName: 'Maven Package'
+
       inputs:
         mavenPomFile: 'pom.xml'
+        mavenOptions: '-Xmx3072m'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.8'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: true
+        testResultsFiles: '**/surefire-reports/TEST-*.xml'
+        goals: 'package'  
 
 - stage: Publish
   displayName: Publish stage
@@ -42,8 +50,6 @@ stages:
   jobs:
   - job: MavenPackageAndPublishArtifacts
     displayName: Maven Package and Publish Artifacts
-    pool:
-      vmImage: $(vmImageName)
     steps:
     - task: PublishBuildArtifacts@1
       inputs:
