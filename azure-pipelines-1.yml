@@ -12,7 +12,7 @@ pool:
 steps:
   - task: CopyFiles@2
     inputs:
-      SourceFolder: 'pipelines-java'
+      SourceFolder: .
       Contents: |
         myapp.yaml
         myservice.yaml
