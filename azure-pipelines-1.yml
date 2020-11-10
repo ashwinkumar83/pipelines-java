@@ -10,16 +10,21 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-  - task: AzureResourceManagerTemplateDeployment@3
+  - task: CopyFiles@2
     inputs:
-      deploymentScope: 'Resource Group'
-      azureResourceManagerConnection: 'AshAzure (a086965e-3fe0-4601-9015-ad423c0fc6ef)'
-      subscriptionId: 'a086965e-3fe0-4601-9015-ad423c0fc6ef'
-      action: 'Create Or Update Resource Group'
-      resourceGroupName: 'helloworld-1588774274517-rg'
-      location: 'Central US'
-      templateLocation: 'URL of the file'
-      csmFileLink: 'https://az400basecontainer.blob.core.windows.net/az400-templates/template.json'
-      csmParametersFileLink: 'https://az400basecontainer.blob.core.windows.net/az400-templates/parametersFile.json'
-      deploymentMode: 'Incremental'
-      deploymentName: 'StorageAccTemplate'
+      SourceFolder: 'pipelines-java'
+      Contents: |
+        myapp.yaml
+        myservice.yaml
+      TargetFolder: ${Build.ArtifactStagingDirectory}
+  - task: KubernetesManifest@0
+    inputs:
+      action: 'deploy'
+      kubernetesServiceConnection: 'cluster-connection'
+      namespace: 'default'
+      manifests: |
+        ${Build.ArtifactStagingDirectory}/myapp.yaml
+        ${Build.ArtifactStagingDirectory}/myservice.yaml
+      containers: |
+        az400appregistry.azurecr.io/az400nginx:latest
+  
