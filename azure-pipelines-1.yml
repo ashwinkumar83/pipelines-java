@@ -17,14 +17,13 @@ steps:
         myapp.yaml
         myservice.yaml
       TargetFolder: ${Build.ArtifactStagingDirectory}
-  - task: KubernetesManifest@0
+  - task: AzureRmWebAppDeployment@4
     inputs:
-      action: 'deploy'
-      kubernetesServiceConnection: 'cluster-connection'
-      namespace: 'default'
-      manifests: |
-        ${Build.ArtifactStagingDirectory}/myapp.yaml
-        ${Build.ArtifactStagingDirectory}/myservice.yaml
-      containers: |
-        az400appregistry.azurecr.io/az400nginx:latest
+      ConnectionType: 'AzureRM'
+      azureSubscription: 'AshAzure (a086965e-3fe0-4601-9015-ad423c0fc6ef)'
+      appType: 'webAppContainer'
+      WebAppName: 'az400webappcontainer'
+      DockerNamespace: 'az400appregistry.azurecr.io'
+      DockerRepository: 'az400nginx'
+      DockerImageTag: 'latest'
   
